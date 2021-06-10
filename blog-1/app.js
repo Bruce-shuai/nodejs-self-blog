@@ -1,19 +1,33 @@
+const handleBlogRouter = require('./src/router/blog');
+const handleUserRouter = require('./src/router/user');
+
 const serverHandle = (req, res) => {
   // 设置返回格式 JSON
   res.setHeader('Content-type', 'application/json')
 
-  // 返回的数据
-  const resData = {
-    name: '双越',
-    site: 'imooc',
-    // process 是 node提供的一个全局变量
-    env: process.env.NODE_ENV   // env 可以识别当前的开发环境(线上、线下等)
+  // 处理blog路由
+  const blogData = handleBlogRouter(req, res); 
+  if (blogData) {
+    res.end(
+      JSON.stringify(blogData)
+    )
+    return;
   }
-  
-  res.end(
-    // 让resData 变成JSON字符串
-    JSON.stringify(resData)  
-  )
+
+  // 处理user路由
+  const userData = handleUserRouter(req, res);
+  if (userData) {
+    res.end(
+      JSON.stringify(blogData)
+    )
+    return;
+  }
+
+  // 为命中路由，返回404    这个“命中” 二字说得很专业啊~
+  // text/plain  指的纯文本
+  res.writeHead(404, {"Content-type": "text/plain"})
+  res.write("404 Not Found\n")  // 其实这里前端路由应该也是可以解决的
+  res.end();
 }
 
 module.exports = serverHandle;
