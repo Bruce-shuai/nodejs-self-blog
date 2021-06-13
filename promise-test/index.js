@@ -31,9 +31,9 @@ function getFileContent(fileName, callback) {
 // callback-hell
 getFileContent('a.json', aData => {
   console.log('a data', aData);
-  getFileContent('b.json', bData => {
-    console.log('b data', bData);
-    getFileContent('c.json', cData => {
+  getFileContent(aData.next, bData => {
+    console.log(bData.next, bData);
+    getFileContent(bData.next, cData => {
       console.log('c data', cData);
     })
   })
@@ -48,20 +48,22 @@ function getFileContent_P(fileName) {
         reject(err);
         return;
       } else {
-        resolve(data);
+        resolve(
+          JSON.parse(data.toString())
+        );
       }
     })
   })
 }
 
 getFileContent_P('a.json').then(data => {
-  console.log('A', data.toString());
-  return getFileContent_P('b.json');
+  console.log('A', data);
+  return getFileContent_P(data.next);
 }).then(data => {
-  console.log('B', data.toString());
-  return getFileContent_P('c.json');
+  console.log('B', data);
+  return getFileContent_P(data.next);
 }).then(data => {
-  console.log('C', data.toString());
+  console.log('C', data);
 })
 
 
