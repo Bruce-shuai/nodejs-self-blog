@@ -1,8 +1,8 @@
 {
   "name": "myblog",
   "version": "1.0.0",
-  "description": "bin/www.js",
-  "main": ".js",
+  "description": "",
+  "main": "bin/www.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",   
