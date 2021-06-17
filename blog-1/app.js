@@ -2,6 +2,10 @@ const handleBlogRouter = require('./src/router/blog');
 const handleUserRouter = require('./src/router/user');
 const querystring = require('querystring');
 
+// session 数据(全局变量)
+const SESSION_DATA
+
+
 // 用于处理  get post 的数据
 const getPostData = (req) => {
   const promise = new Promise((resolve, reject) => {
