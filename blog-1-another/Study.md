@@ -114,3 +114,53 @@ const server = http.createServer((req, res) => {
 ##### 关于 github 提交内容，我有一个问题
 
 在一个大的文件夹里，我开辟了一个 git 仓库并放到了 github 这个远程仓库了。如果我哪天一不小心，把这个大文件里的小文件以单独的 git 一系列操作又单独开辟了一个 git 仓库。这种情况可能存在吗？
+
+> 刚才测试，似乎不会~ 本质上还是在原来那个大的 git 仓库里记录了这个小文件的更改
+
+##### 开始项目搭建了(不适用任何框架)~
+
+- 从 0 开始搭建，不使用任何框架
+- 使用 nodemon 监测文件变化，自动重启 node
+- 使用 cross-env 设置环境变量，兼容 mac linux 和 windows
+
+1. 首先确保开发的时候有 node 环境，且注意 node 版本号 >= 8.0 `node -v`
+2. `npm init -y` 来初始化 npm 的环境(会生成一个 package.json 文件)
+3. 把 package.json 文件的 main 属性的 index.js 改为 主执行文件名(及其路径)  
+   创建一个 bin 文件夹(相当于其他语言的可执行文件)把初次执行的文件放在这个 bin 目录下
+   故 package.json 文件里的"main": "bin/www.js"
+4. bin/www.js 这个文件主要是用来写 server 的构建逻辑的
+
+```
+const http = require('http');
+
+const PORT = 8000;
+
+const server = http.createServer(...) // 这里的内容又再弄一个文件来实现~
+server.listen(PORT)
+
+createServer()里的回调函数，我放在app.js 文件来写
+
+运行代码(blog文件夹下)： node bin/www.js
+```
+
+5. 安装 nodemon 和 cross-env
+
+```
+npm install nodemon cross-env --save-dev
+```
+
+然后在 package.json 文件 的 script 属性里，增添下面的内容
+
+> "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js"
+
+```
+nodemon效果: 监控文件变化，自动重启node
+cross-env NODE_ENV  是兼容环境变量  这样可以兼容windows和mac、linux的操作系统环境
+
+这样之后，通过npm run dev 就可以启动这个环境变量, 从而代替 node + 文件名的使用方法。这个和我在看dell视频的webpack中是有讲这个的~
+
+挺好用的~
+我们可以直接通过 process.env.NODE_ENV 来获得当前启动这个项目用的是什么环境(比如线上prod，开发dev)
+
+更多内容有待进一步学习~
+```
