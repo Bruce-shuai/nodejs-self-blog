@@ -106,3 +106,7 @@ const server = http.createServer((req, res) => {
   // /username/xxx 又是一个路由
 
   路由代表了 url 唯一的标识
+
+  有个问题： 何谓 url？ url 似乎没有包含 协议、域名、端口号
+
+##### 处理 http 请求的综合案例
