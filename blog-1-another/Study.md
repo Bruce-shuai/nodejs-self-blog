@@ -65,3 +65,44 @@ npm init -y
 写代码...
 运行代码： node + 文件名(这个文件名需要和package.json main属性的对应文件名的名字一致)
 ```
+
+##### nodejs 处理 post 请求
+
+- post 请求，即客户端要像服务端传递数据，如新建博客(客户端要向 server 端传一些数据)
+- 通过 post data 传递数据(post data 可不是什么专业的术语，只是传递的信息)
+- 浏览器无法直接模拟，需要手写 js(ajax~还有跨域同域问题)，或者使用 postman(这个好评！)
+
+nodejs 处理 post 请求 实例：
+
+```
+const http = require('http');
+const server = http.createServer((req, res) => {
+  if (req.method === 'POST') {
+    // 数据格式 --- content-type: 发送的格式是什么？
+    console.log('content-type', req.headers['content-type'])
+    // 接受数据  数据流方式传输(从客户端传到服务端)
+    let postData = '';
+    req.on('data', chunk => {
+      postData += chunk.toString();
+    })
+    // end 表示从客户端传来的数据已经流完了~  这里和点击事件的道理差不多
+    req.on('end', () => {
+      console.log(postData)
+      // 这里表示server端也处理完毕，end结束了，()里的内容返回到浏览器
+      res.end('hello world')  // 在这里返回，因为这里是异步
+    })
+  }
+})
+```
+
+注意： 更新了代码的内容，需重新启动 node。 node + 需要启动的文件名
+
+##### nodejs 处理路由
+
+- https://github.com/ // /是一个路由，叫"点击路由"
+- https://github.com/username
+  // /username 也是一个路由
+- https://github.com/username/xxx
+  // /username/xxx 又是一个路由
+
+  路由代表了 url 唯一的标识
