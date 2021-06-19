@@ -20,6 +20,19 @@ const getList = (author, keyword) => {
   ]
 } 
 
+// 通过参数id来获取详情
+const getDetail = (id) => {
+  // 先返回假数据
+  return {
+    id: 1,
+    title: '标题A',
+    content: '内容A',
+    createTime: 1111111111,
+    author: 'zhangsan'
+  }
+}
+
 module.exports = {
-  getList
+  getList,
+  getDetail
 }

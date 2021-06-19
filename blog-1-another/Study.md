@@ -205,3 +205,23 @@ cross-env NODE_ENV  是兼容环境变量  这样可以兼容windows和mac、lin
    )
 
    controller 文件夹 是更关心数据层面的东西的
+
+3. 注意一个问题:
+
+```
+在POST请求，server端的下面操作
+
+let postData = '';
+req.on('data', chunk => {
+  postData += chunk.toString();
+})
+req.on('end', () => {
+  resData.postData = postData;
+  res.end(
+    JSON.stringify(resData);
+  )
+})
+
+上面的代码其实是一个异步代码
+所以用Promise 来实现更好(拒接回调地狱)
+```

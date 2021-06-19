@@ -1,4 +1,4 @@
-const { getList } = require('../controller/blog');
+const { getList, getDetail } = require('../controller/blog');
 const { SuccessModel, ErrorModel } = require('../model/resModel');
 // 五个关于blog的接口 这里的函数要接受req, res这两个参数好对应app.js文件的内容
 const handleBlogRouter = (req, res) => {
@@ -15,9 +15,9 @@ const handleBlogRouter = (req, res) => {
 
   // 获取博客详情
   if (method === 'GET' && req.path === '/api/blog/detail') {
-    return {
-      msg: '这是获取博客详情的接口'
-    }
+    const id = req.query.id || '';
+    const detailData = getDetail(id);
+    return new SuccessModel(detailData);
   }
 
   // 新建一篇博客  创建内容一般都是用的POST
