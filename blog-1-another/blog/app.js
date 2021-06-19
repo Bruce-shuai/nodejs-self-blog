@@ -2,11 +2,19 @@
 // 获取Blog、User的Router
 const handleBlogRouter = require('./src/router/blog');
 const handleUserRouter = require('./src/router/user');
+const querystring = require('querystring');
 
 const serverHandle = (req, res) => {
 
+  const url = req.url;
+  const path = url.split('?')[0];
+  req.path = path
   // 设置返回格式 为 JSON
   res.setHeader('Content-type', 'application/json');
+
+  // 解析 query 以方便 GET 接口返回对应的数据
+  req.query = querystring.parse(url.split('?')[1]);
+
 
   // 开始处理 Router 的内容
   // 处理 blog 路由
