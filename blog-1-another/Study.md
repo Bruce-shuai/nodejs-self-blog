@@ -327,3 +327,24 @@ API 的一部分
 
 查找并排序：(order by 正序 order by desc 倒序)
 例如:`select * from users where password like '%1%' order by id desc;`
+
+##### 更新数据
+
+update 表明 set 具体需更改的列的内容 where 条件
+例如：`update users set realname='李四2' where username='lisi';`
+(有可能会报错，解决方法： 输入 `SET SQL_SAFE_UPDATES=0;` 就可解决)
+
+##### 删除数据
+
+delete from 表名 where 条件 (注意： 如果不加 where，则表里的内容会全部被删除)
+
+> 注意： 其实在正式的操作中，删除行不是如上图一样的操作而是再创建一个列 state 表示状态 0 1
+> (1 表示 数据可用 0 表示 数据不可用)
+> 如果要删除数据，就直接把 state 状态改为 0 就可以了，而不是真正的把数据删掉(估计这样做是为了更加的安全)
+> 删除方法如下：`update users set state='0' where username='lisi';`
+> 然后查询：`select * from users where state=1;`
+
+上述的技术其实叫做软删除 而不是 真正的删除
+(软删除的好处是数据好恢复)
+
+小知识： =表示等于 <>表示不等于
