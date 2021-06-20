@@ -10,7 +10,7 @@ class BaseModel {
     if (data) {
       this.data = data;
     }
-    if (message) {
+    if (message) {   // 因为message为null了,自然 不会再运行这一行的代码了
       this.message = message;
     }
   }

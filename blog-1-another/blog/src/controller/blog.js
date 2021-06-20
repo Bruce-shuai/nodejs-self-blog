@@ -32,7 +32,23 @@ const getDetail = (id) => {
   }
 }
 
+const newBlog = (blogData = {}) => {
+  // blogData 是一个博客对象，包含title content属性
+  console.log('new BlogData...', blogData);
+  return {
+    id: 3
+  }
+}
+
+const updateBlog = (id, blogData = {}) => {
+  // id 就是要更新博客的id
+  console.log('update blog', id, blogData);
+  return true;   // true  返回成功
+}
+
 module.exports = {
   getList,
-  getDetail
+  getDetail,
+  newBlog,
+  updateBlog
 }
