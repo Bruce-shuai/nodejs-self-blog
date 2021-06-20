@@ -302,3 +302,28 @@ API 的一部分
 
 - 表操作(通过 sql 语句 来操作)
   数据库的增删改查操作
+  （其实 sql 语句的增删改查学会，95%的需求就能够搞定了)
+
+首先要使用某数据库的表，先要用这个数据库 `use 库名;`
+显示 该库里的所有的表 `show tables`
+注释： -- 内容
+
+增加：`insert into... 自己可以在网上查
+注意： 如果遇上关键字同名情况，只需在这个被误解的关键字上加 ``
+
+查询： `select * from users;` 查询 users 表中全部列的数据
+但是这种\*的操作有点耗费性能
+
+查某几个列的内容：例如 `select id, username from users;`
+
+查询条件(增加 where)： `select * from users where username='zhangsan';`
+
+多条件查询： 增加一个`and`或`or`就行, 例如：
+`select * from users where username='zhangsan' and password='123';`
+似乎对于字符串，使用单引号和双引号都是可以的
+
+模糊查询： like '%...%'
+如：`select * from users where username like '%zhang%'`
+
+查找并排序：(order by 正序 order by desc 倒序)
+例如:`select * from users where password like '%1%' order by id desc;`
