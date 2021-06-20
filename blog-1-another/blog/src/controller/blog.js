@@ -18,7 +18,7 @@ const getList = (author, keyword) => {
       author: 'lisi'
     }
   ]
-} 
+}  
 
 // 通过参数id来获取详情
 const getDetail = (id) => {
@@ -40,15 +40,23 @@ const newBlog = (blogData = {}) => {
   }
 }
 
+/** 下面的POST请求似乎都是围绕着id来运行的代码 */
+
 const updateBlog = (id, blogData = {}) => {
   // id 就是要更新博客的id
   console.log('update blog', id, blogData);
   return true;   // true  返回成功
 }
 
+const delBlog = (id) => {
+  // id 就是要删除博客的id
+  return true;
+}
+
 module.exports = {
   getList,
   getDetail,
   newBlog,
-  updateBlog
+  updateBlog,
+  delBlog
 }

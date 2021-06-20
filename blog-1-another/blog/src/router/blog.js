@@ -1,4 +1,4 @@
-const { getList, getDetail, newBlog, updateBlog } = require('../controller/blog');
+const { getList, getDetail, newBlog, updateBlog, delBlog } = require('../controller/blog');
 const { SuccessModel, ErrorModel } = require('../model/resModel');
 // 五个关于blog的接口 这里的函数要接受req, res这两个参数好对应app.js文件的内容
 const handleBlogRouter = (req, res) => {
@@ -39,8 +39,12 @@ const handleBlogRouter = (req, res) => {
 
   // 删除一篇博客   这里的删除竟然也用的POST方法
   if (method === 'POST' && req.path === '/api/blog/del') {
-    return {
-      msg: '这是删除一篇博客的接口'
+    const result = delBlog(id);
+
+    if (result) {
+      return new SuccessModel(result)
+    } else {
+      return new ErrorModel('删除博客失败')
     }
   }
 }
