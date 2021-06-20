@@ -348,3 +348,64 @@ delete from 表名 where 条件 (注意： 如果不加 where，则表里的内�
 (软删除的好处是数据好恢复)
 
 小知识： =表示等于 <>表示不等于
+
+---
+
+简单讲一下数据类型:
+
+- VARCHAR(10) 这里表示的是最多能够存储 10 个汉字
+  (mysql 版本 > 5， 例如 varchar(10)，这里的 10 代表的是 10 个字符，不管是英文还是汉字都是 10 个)
+
+##### 使用 Nodejs 操作 Mysql
+
+(通过程序来连接数据库)
+
+- 先用示例：用 demo 演示，不考虑使用
+- 封装：将其封装为系统可用的工具
+- 使用：让 API 直接操作数据库，不再使用假数据
+
+> 下面在 blog-1-another 文件夹下创建了一个文件夹 mysql-test 用来测试 mysql
+
+```
+1. 先安装模块： npm init -y
+2. 再安装npm模块： npm i mysql
+3. 写代码
+4. 执行代码： 终端： node + 文件名
+```
+
+注意一件事：
+当 sql 用于数据改变的时候，结果会返回一个对象如下：
+
+```
+OkPacket {
+  fieldCount: 0,
+  affectedRows: 1,     // 影响的行数
+  insertId: 0,
+  serverStatus: 34,
+  warningCount: 0,
+  message: '(Rows matched: 1  Changed: 1  Warnings: 0',
+  protocol41: true,
+  changedRows: 1       // 更新的函数
+}
+```
+
+上面的对象内的属性 对接口的建立，数据连接有大用！！
+
+有一个问题需要注意一下：
+
+```
+在没有安装node_modules 的文件夹下，安装mysql  仅用  npm i mysql 就可以了。但是 如果在有了node_modules的文件夹下，安装 mysql 似乎要使用 npm i mysql --save  也不知道我这个猜测是否是对的。或者说写没写 --save 都没有问题
+```
+
+在 src 文件夹下再创建一个文件夹叫 conf。在这个文件下再创建一个文件 db.js 这里面存储的就是配置
+
+在 db.js 里获取环境变量
+
+```
+// process 就是nodejs里面进程的一些信息
+const env = process.env.NODE_ENV //  环境参数(这些数据其实在package.json 文件里的scripts就已经有定义了)
+```
+
+再在 src 文件夹下创建一个文件夹 db 用来放置和数据操作(涉及数据库)相关的文件
+
+注意： 在同一个 promise 中，resolve() 和 reject() 只会有一个被运行
