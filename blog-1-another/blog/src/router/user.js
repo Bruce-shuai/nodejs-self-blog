@@ -11,10 +11,11 @@ const handleUserRouter = (req, res) => {
     // 用户名和密码都是通过post Data 传递过来的,而postData 全放在了req.body
     const { username, password } = req.body;
     const result = loginCheck(username, password);
-    if (result) {
-      return new SuccessModel(result);
-    }
-    return new ErrorModel('用户登录失败')
+    return result.then(res => {
+      if (res.username)
+        return new SuccessModel(res);
+      return new ErrorModel('用户登录失败')
+    })
   }
 }
 
