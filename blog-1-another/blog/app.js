@@ -53,13 +53,17 @@ const serverHandle = (req, res) => {
 
     // 开始处理 Router 的内容
     // 处理 blog 路由
-    const blogData = handleBlogRouter(req, res);
-    if (blogData) {  // 如果输入的是正确的值
-      res.end(
-        JSON.stringify(blogData)
-      )
-      return;        // 防止继续往下执行 
+    const blogResult = handleBlogRouter(req, res);
+
+    if (blogResult) {
+      blogResult.then((blogData) => {
+          res.end(
+            JSON.stringify(blogData)
+          )
+      })
+      return;
     }
+
     
     // 处理 user 路由
     const userData = handleUserRouter(req, res);

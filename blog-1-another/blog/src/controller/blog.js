@@ -1,23 +1,23 @@
+const { exec } = require('../db/mysql');  // 注意：exec是一个Promise
+
 // author、keyword 都是通过query来获取的
 // 其实原理就是通过url的参数来返回相应的数据给浏览器
 const getList = (author, keyword) => {
-  // 先返回一点假数据，格式是正确的
-  return [
-    {
-      id: 1,
-      title: '标题A',
-      content: '内容A',
-      createTime: 1111111111,
-      author: 'zhangsan'
-    },
-    {
-      id: 2,
-      title: '标题B',
-      content: '内容B',
-      createTime: 2222222222,
-      author: 'lisi'
-    }
-  ]
+  // 删掉了假数据
+  // 开始使用数据库的内容
+  // 先定义一个sql语句   1=1的作用是占位置 如果不写这个，那么当author和keyword 都没有值，就麻烦了
+  let sql = `select * from blogs where 1=1 ` // 最后这里有个空格
+  if (author) {
+    sql += `and author='${author}' `
+  }
+  if (keyword) {
+    sql += `and title like '%${keyword}%'`
+  }
+
+  sql += `order by createtime desc;`;  // 注意这里的;符号
+
+  // 返回的是一个promise
+  return exec(sql);
 }  
 
 // 通过参数id来获取详情
