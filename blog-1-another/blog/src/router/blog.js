@@ -17,16 +17,23 @@ const handleBlogRouter = (req, res) => {
 
   // 获取博客详情
   if (method === 'GET' && req.path === '/api/blog/detail') {
-    const detailData = getDetail(id);
-    return new SuccessModel(detailData);
+    const result = getDetail(id);
+    return result.then(detailData => {
+      return new SuccessModel(detailData);   // 这里的返回内容作为下一个then的参数
+    })
   }
 
   // 新建一篇博客  创建内容一般都是用的POST
   if (method === 'POST' && req.path === '/api/blog/new') {
     // 由于是POST请求，所以是从req.body 里获取 post man的数据
-    const blogData = req.body;
-    const newBlogData = newBlog(blogData)
-    return new SuccessModel(newBlogData)
+    
+
+    req.body.author = 'zhangsan';  // 假数据，待开发登录的时候再改成真实的数据
+    
+    const result = newBlog(req.body)
+    return result.then(newBlogData => {
+      return new SuccessModel(newBlogData)
+    })
   }
 
   // 更新一篇博客
