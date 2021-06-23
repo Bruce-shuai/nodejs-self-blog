@@ -38,23 +38,28 @@ const handleBlogRouter = (req, res) => {
 
   // 更新一篇博客
   if (method === 'POST' && req.path === '/api/blog/update') {
-    const result = updateBlog(id, req.body);
-    if (result) {
-      return new SuccessModel(result)
-    } else {
-      return new ErrorModel('更新博客失败')
-    }
+    const result = updateBlog(id, req.body);  // 仍然是promise对象
+    return result.then(val => {
+      if (val) {
+        return new SuccessModel();
+      } else {
+        return new ErrorModel('更新博客失败')
+      }
+    })
   }
 
   // 删除一篇博客   这里的删除竟然也用的POST方法
   if (method === 'POST' && req.path === '/api/blog/del') {
-    const result = delBlog(id);
-
-    if (result) {
-      return new SuccessModel(result)
-    } else {
-      return new ErrorModel('删除博客失败')
-    }
+    const author = 'zhangsan';   // 假数据
+    // 通过author 防止乱删数据
+    const result = delBlog(id, author);
+    return result.then(val => {
+      if (val) {
+        return new SuccessModel();
+      } else {
+        return new ErrorModel('删除博客失败')
+      }
+    })
   }
 }
 

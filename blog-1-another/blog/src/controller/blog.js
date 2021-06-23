@@ -1,7 +1,7 @@
 const { exec } = require('../db/mysql');  // 注意：exec是一个Promise
 
 // 似乎GET请求都是用的select 查询语句来解决问题？！
-// POST 请求 用的是insert语句
+// POST 请求 用的是insert语句 或者  update、delete语句
 
 // author、keyword 都是通过query来获取的
 // 其实原理就是通过url的参数来返回相应的数据给浏览器
@@ -86,12 +86,34 @@ const newBlog = (blogData = {}) => {
 const updateBlog = (id, blogData = {}) => {
   // id 就是要更新博客的id
   // console.log('update blog', id, blogData);
-  return true;   // true  返回成功
+  // 作者是不会更新的
+
+  const title = blogData.title;
+  const content = blogData.content;
+
+  const sql = `
+    update blogs set title='${title}', content='${content}' where id='${id}'
+  `
+  return exec(sql).then(updateData => {
+    // 更新内容大于0则说明更新成功，否则返回false
+    if (updateData.affectedRows > 0) {
+      return true;
+    }
+    return false
+  });   // true  返回成功
 }
 
-const delBlog = (id) => {
+const delBlog = (id, author) => {
   // id 就是要删除博客的id
-  return true;
+  // 本次项目就不使用软删除了，但在实际项目中，优先考虑软删除
+  const sql = `delete from blogs where id='${id}' and author='${author}';`
+  
+  return exec(sql).then(deldateData => {
+    if (deldateData.affectedRows > 0) {   // 这里同样是affectedRows
+      return true;
+    }
+    return false;
+  });
 }
 
 module.exports = {

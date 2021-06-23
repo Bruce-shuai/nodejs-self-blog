@@ -14,7 +14,7 @@ function exec(sql) {
     con.query(sql, (err, result) => {
       if (err) {
         reject(err);
-        return
+        return;
       }
       resolve(result)
     })
