@@ -440,4 +440,15 @@ const env = process.env.NODE_ENV //  环境参数(这些数据其实在package.j
   > 浏览器中也可以通过 js 修改 cookie(有限制)
 
 - js 操作 cookie，浏览器中查看 cookie 的方法？
+
+  - 客户端查看 cookie，三种方式
+    - chrome 的 Console 里通过 document.cookie 里去查看(这里的 js 查看 cookie 其实也是有限制的)
+    - chrome 的 Network 里网络请求的 Request Header
+    - chrome 的 Application 里 有 cookies 选项 可以看
+  - js 查看、修改 cookie(这是有限制的) 事实上本地修改 cookie 的情况并不多。因为已近有了 localstorage 了
+    - 在控制台运行 document.cookie='键值对;' // 这样达到的是累加 cookie，而不是覆盖之前的 cookie
+
 - server 端操作 cookie，实现登录验证
+  - 查看 cookie
+  - 修改 cookie
+  - 实现登录验证

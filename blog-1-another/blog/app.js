@@ -45,16 +45,33 @@ const serverHandle = (req, res) => {
   // 解析 query 以方便 GET 接口返回对应的数据
   req.query = querystring.parse(url.split('?')[1]);
 
+  /* 解析cookie 这里面的代码用得好啊*/
+  // 注意，cookie的内容最好不要在前端改，而应该在后端进行修改
+  req.cookie = {};   // 为req开辟一个cookie属性 并设置为对象
+  // 先获取cookie
+  const cookieStr = req.headers.cookie || ''; // k1=v1; k2=v2; k3=v3
+  cookieStr.split(';').forEach(item => {      // 先将字符串拆分成数组 
+    if (!item) {   // 如果为空就返回
+      return;
+    }
+    const arr = item.split('=');
+    const key = arr[0];
+    const value = arr[0];
+    req.cookie[key] = value;   // 这一招秀啊
+  })  
+// console.log('cookie is ', req.cookie);
+  // 登录验证：  前端把cookie 传到后端，由后端来解析cookie，
+  // 我们来做个规定：如果cookie中有username,就认为已经登录，如果cookie中没有username，就认为没有登录
+
   // 先解析下是否有post Data的数据
   getPostData(req).then(postData => {
     req.body = postData;   // 把postData的值放在req.body里面
-  
+    
     // 注意一下，这里解析post Data和处理路由的代码执行顺序
 
     // 开始处理 Router 的内容
     // 处理 blog 路由
     const blogResult = handleBlogRouter(req, res);
-
     if (blogResult) {
       blogResult.then((blogData) => {
           res.end(
@@ -64,7 +81,6 @@ const serverHandle = (req, res) => {
       return;
     }
 
-    
     // 处理 user 路由
     const userResult = handleUserRouter(req, res);
     if (userResult) {
