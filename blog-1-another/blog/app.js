@@ -4,6 +4,8 @@ const handleBlogRouter = require('./src/router/blog');
 const handleUserRouter = require('./src/router/user');
 const querystring = require('querystring');
 
+// session 数据
+const SESSION_DATA = {};
 
 // 用于处理post data
 const getPostData = (req) => {
@@ -38,7 +40,7 @@ const serverHandle = (req, res) => {
 
   const url = req.url;
   const path = url.split('?')[0];
-  req.path = path
+  req.path = path;
   // 设置返回格式 为 JSON
   res.setHeader('Content-type', 'application/json');
 
@@ -55,10 +57,26 @@ const serverHandle = (req, res) => {
       return;
     }
     const arr = item.split('=');
-    const key = arr[0];
-    const value = arr[0];
+    const key = arr[0].trim();  // trim() 用于去掉空格
+    const value = arr[1].trim();
     req.cookie[key] = value;   // 这一招秀啊
   })  
+
+  // 解析 session
+  const needSetCookie = false;
+  const userId = req.cookie.userid;
+  if (userId) {
+    if (!SESSION_DATA[userId]) {
+      SESSION_DATA[userId] = {};
+    }
+  } else {
+    needSetCookie = true;
+    userId = `${Date.now()}_${Math.random()}`;
+    SESSION_DATA[userId] = {};
+  }
+  req.session = SESSION_DATA[userId]
+ 
+
 // console.log('cookie is ', req.cookie);
   // 登录验证：  前端把cookie 传到后端，由后端来解析cookie，
   // 我们来做个规定：如果cookie中有username,就认为已经登录，如果cookie中没有username，就认为没有登录
@@ -74,6 +92,11 @@ const serverHandle = (req, res) => {
     const blogResult = handleBlogRouter(req, res);
     if (blogResult) {
       blogResult.then((blogData) => {
+          if (needSetCookie) {
+            // 模板字符串竟然还能执行函数，牛逼
+            res.setHeader('Set-Cookie', `userid=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`)  // path='/' 让cookie适于根目录,这样，登录在所有路由里都是可以使用的
+          }
+
           res.end(
             JSON.stringify(blogData)
           )
@@ -85,6 +108,11 @@ const serverHandle = (req, res) => {
     const userResult = handleUserRouter(req, res);
     if (userResult) {
       userResult.then((userData) => {
+        if (needSetCookie) {
+          // 模板字符串竟然还能执行函数，牛逼
+          res.setHeader('Set-Cookie', `userid=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`)  // path='/' 让cookie适于根目录,这样，登录在所有路由里都是可以使用的
+        }
+
         res.end(
           JSON.stringify(userData)
         )

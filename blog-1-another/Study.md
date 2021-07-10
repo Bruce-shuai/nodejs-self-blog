@@ -451,4 +451,21 @@ const env = process.env.NODE_ENV //  环境参数(这些数据其实在package.j
 - server 端操作 cookie，实现登录验证
   - 查看 cookie
   - 修改 cookie
-  - 实现登录验证
+  - 实现登录验证(其实就只需要上面两步就可以实现登录验证效果)
+
+在 Set-Cookie 里面添加 httpOnly: 表示 cookie 只允许通过后端来修改，不允许前端来修改(甚至前端都不能看见 cookie 里的信息)
+
+expires : 设置的是 cookie 的时间
+
+#### session
+
+只使用 cookie 会出现什么问题：
+
+1. 会暴露 username，很危险
+2. cookie 的存储容量是限定的(5kb)，无法存储比较多的数据
+
+其实可以在 cookie 里存放 userid(例如一个简单的随机数)，server 端可以通过 userid 对应到相应的 username。
+(server 端更安全，以及存储容量更大)
+
+session 其实就是上述所说的 一种解决方案，即 server 端存储用户信息
+![session](./imgs/session.png)
